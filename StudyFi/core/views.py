@@ -8,8 +8,43 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 GOOGLE_WEB_CLIENT_ID = "1048349959127-ss4epu1ls156i0dnh3p02h9egk5hm7kb.apps.googleusercontent.com"
+
+
+class GoogleLoginView(APIView):
+    def post(self, request):
+        token = request.data.get("id_token")
+
+        if not token:
+            return Response(
+                {"error": "id_token is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # 1. Google se Token verify karein
+            idinfo = id_token.verify_oauth2_token(
+                token, requests.Request(), GOOGLE_WEB_CLIENT_ID
+            )
+            email = idinfo.get("email")
+
+            # 2. Check karein ki user pehle se hai ya naya account banana hai
+            user, created = User.objects.get_or_create(
+                email=email, defaults={"username": email}
+            )
+
+            # 3. StudyFi Auth Token generate karke return karein
+            auth_token, _ = Token.objects.get_or_create(user=user)
+
+            return Response({"token": auth_token.key}, status=status.HTTP_200_OK)
+
+        except ValueError:
+            return Response(
+                {"error": "Invalid Google Token"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
