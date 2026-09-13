@@ -9,6 +9,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
+GOOGLE_WEB_CLIENT_ID = "1048349959127-ss4epu1ls156i0dnh3p02h9egk5hm7kb.apps.googleusercontent.com"
+
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
