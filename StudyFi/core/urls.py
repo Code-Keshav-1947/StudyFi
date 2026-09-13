@@ -11,6 +11,6 @@ router.register(r"answers", AnswerViewSet)
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", obtain_auth_token, name="login"),
-    path("google-login/", GoogleLoginView.as_view(), name="google-login"),
+    path("auth/login/", GoogleLoginView.as_view(), name="google-login"),
     path("", include(router.urls)),
 ]
