@@ -54,6 +54,8 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "core",
+    "cloudinary_storage",
+    "cloudinary",
     "rest_framework",
     "rest_framework.authtoken",
     "django.contrib.admin",
@@ -104,7 +106,6 @@ REST_FRAMEWORK = {
 }
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
 
@@ -150,3 +151,12 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# Cloudinary Configurations
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
+# Set cloudinary as default file storage
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
