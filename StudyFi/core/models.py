@@ -16,7 +16,7 @@ class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50)
     text = models.TextField(blank=True)
-    image_url = models.URLField(null=True, blank=True)  # Cloudinary / Firebase Storage URL
+    image = models.ImageField(upload_to="questions/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
