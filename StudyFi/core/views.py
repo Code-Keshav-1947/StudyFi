@@ -51,6 +51,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
+class OwnProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)
+
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all().order_by("-created_at")
     serializer_class = QuestionSerializer
