@@ -9,9 +9,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['id', 'user', 'subject', 'text', 'image_url', 'created_at']
+        fields = ['id', 'user', 'subject', 'text', 'image', 'created_at']
         
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id', 'question', 'user', 'text', 'image_url', 'created_at']
+        fields = ['id', 'question', 'user', 'text', 'image', 'created_at']

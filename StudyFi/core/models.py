@@ -27,7 +27,7 @@ class Answer(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
-    image_url = models.URLField(blank=True, null=True)
+    image = models.ImageField(upload_to="answers/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
