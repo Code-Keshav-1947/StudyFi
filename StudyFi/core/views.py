@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from rest_framework import generics, permissions
 
 GOOGLE_WEB_CLIENT_ID = "1048349959127-ss4epu1ls156i0dnh3p02h9egk5hm7kb.apps.googleusercontent.com"
 
@@ -51,12 +52,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
-class OwnProfileViewSet(viewsets.ModelViewSet):
-    serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+class OwnProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # get_or_create se agar profile nahi bana hoga toh automatic ban jayega, crash nahi hoga
+        profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        return profile
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all().order_by("-created_at")
