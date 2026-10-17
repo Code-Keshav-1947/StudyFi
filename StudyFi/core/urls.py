@@ -19,6 +19,7 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", obtain_auth_token, name="login"),
     path("auth/google/", GoogleLoginView.as_view(), name="google-login"),
+    path("questions/<int:question_id>/answers/", AnswerViewSet.as_view({"get": "list","post": "create"}), name="question-answers"),
     path(
         "own-profile/", OwnProfileView.as_view(), name="own-profile"
     ),  # <-- Direct path as_view() ke sath
