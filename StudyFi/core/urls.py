@@ -15,12 +15,13 @@ router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet)
 router.register(r"questions", QuestionViewSet)
 router.register(r"answers", AnswerViewSet)
-router.register(r"get-points", GetPoints)
+
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", obtain_auth_token, name="login"),
     path("auth/google/", GoogleLoginView.as_view(), name="google-login"),
+    path("points/", GetPoints.as_view(), name="get-points"),
     path("questions/<int:question_id>/answers/", AnswerViewSet.as_view({"get": "list","post": "create"}), name="question-answers"),
     path(
         "own-profile/", OwnProfileView.as_view(), name="own-profile"

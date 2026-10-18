@@ -46,10 +46,17 @@ class GoogleLoginView(APIView):
                 {"error": "Invalid Google Token"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-class GetPoints(generics.RetrieveAPIView):
-    def get_object(self):
-        points = self.request.user.profile.points
-    
+
+class GetPoints(APIView):
+    permission_classes = [IsAuthenticated]  # Taaki sirf logged-in user hi dekh sake
+
+    def get(self, request):
+        # User ke profile se points nikalenge
+        user_points = request.user.profile.points
+
+        # Direct raw number ya JSON response return karenge
+        return Response(user_points)
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
