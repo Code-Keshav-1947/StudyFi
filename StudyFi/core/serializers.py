@@ -27,3 +27,4 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ['id', 'question', 'user', 'text', 'image', 'created_at']
+        read_only_fields = ['question', 'user', 'created_at']  # Ye fields user ke liye read-only hain
