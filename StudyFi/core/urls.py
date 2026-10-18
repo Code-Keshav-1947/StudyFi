@@ -8,12 +8,14 @@ from .views import (
     AnswerViewSet,
     RegisterView,
     OwnProfileView,
+    GetPoints
 )
 
 router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet)
 router.register(r"questions", QuestionViewSet)
 router.register(r"answers", AnswerViewSet)
+router.register(r"get-points", GetPoints)
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
