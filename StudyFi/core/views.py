@@ -92,15 +92,30 @@ class QuestionViewSet(viewsets.ModelViewSet):
         profile.save()
         serializer.save(user=self.request.user)
 
+
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all().order_by("-created_at")
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Sirf usi question ke answers dikhane ke liye jo URL mein hai
+        question_id = self.kwargs.get("question_id")
+        if question_id:
+            return Answer.objects.filter(question_id=question_id).order_by(
+                "-created_at"
+            )
+        return super().get_queryset()
+
     def perform_create(self, serializer):
+        # Points update karne ka aapka logic (Boht achha hai!)
         profile = self.request.user.profile
         profile.points += 10
         profile.save()
-        serializer.save(user=self.request.user)
+
+        # URL se question_id nikal kar answer ke sath save karna zaroori hai
+        question_id = self.kwargs.get("question_id")
+        serializer.save(user=self.request.user, question_id=question_id)
 
 
 class RegisterView(APIView):
