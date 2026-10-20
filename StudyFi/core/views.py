@@ -69,7 +69,6 @@ class OwnProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # get_or_create se agar profile nahi bana hoga toh automatic ban jayega, crash nahi hoga
         profile, _ = Profile.objects.get_or_create(user=self.request.user)
         return profile
 
@@ -84,7 +83,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         # Check agar points hain ya nahi
         if profile.points < 5:
             raise serializers.ValidationError(
-                {"error": "Doubt poochhne ke liye kam se kam 5 points chahiye!"}
+                {"error": "You need minimum 5 points to post a question."}
             )
 
         # 5 Points deduct karo aur save karo
@@ -126,22 +125,20 @@ class RegisterView(APIView):
 
         if not username or not password:
             return Response(
-                {"error": "Username aur password required hai"},
+                {"error": "Username and password are required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         if User.objects.filter(username=username).exists():
             return Response(
-                {"error": "Username already takened by someone else."},
+                {"error": "Username already taken by someone else."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Naya User create karna
         user = User.objects.create_user(
             username=username, password=password, email=email
         )
 
-        # User ke liye Token generate karna
         token, _ = Token.objects.get_or_create(user=user)
 
         return Response(

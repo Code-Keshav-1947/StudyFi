@@ -19,9 +19,12 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    number_of_answers = serializers.SerializerMethodField()
     class Meta:
         model = Question
-        fields = ['id', 'user', 'subject', 'text', 'image', 'created_at']
+        fields = ['id', 'user', 'subject', 'text', 'image', 'created_at', 'number_of_answers']
+    def get_number_of_answers(self, obj):
+        return obj.answers.count()  # Ye method answers ka count return karega
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
