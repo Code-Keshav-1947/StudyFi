@@ -23,6 +23,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['id', 'user', 'subject', 'text', 'image', 'created_at', 'number_of_answers']
+        read_only_fields = ['user', 'created_at', 'number_of_answers']  # Ye fields user ke liye read-only hain
     def get_number_of_answers(self, obj):
         return obj.answers.count()  # Ye method answers ka count return karega
 
